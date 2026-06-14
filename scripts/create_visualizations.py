@@ -81,10 +81,13 @@ def chart1_wesad_hrv_by_state(wesad_df, output_dir):
     # Order states
     plot_data['state'] = pd.Categorical(plot_data['state'], categories=states, ordered=True)
     plot_data = plot_data.sort_values('state')
-    
+
+    # RMSSD is stored in seconds; convert to milliseconds (the HRV convention)
+    plot_data['rmssd_ms'] = plot_data['rmssd'] * 1000
+
     # Create boxplot
     box_colors = [COLORS['primary'] if s == 'stress' else COLORS['secondary'] for s in states]
-    bp = ax.boxplot([plot_data[plot_data['state'] == s]['rmssd'].values for s in states],
+    bp = ax.boxplot([plot_data[plot_data['state'] == s]['rmssd_ms'].values for s in states],
                     tick_labels=states, patch_artist=True, widths=0.6,
                     boxprops=dict(facecolor=COLORS['secondary'], edgecolor=COLORS['primary'], linewidth=1.5),
                     medianprops=dict(color=COLORS['primary'], linewidth=2),
@@ -102,7 +105,7 @@ def chart1_wesad_hrv_by_state(wesad_df, output_dir):
     
     # Add mean markers
     for i, state in enumerate(states, 1):
-        state_data = plot_data[plot_data['state'] == state]['rmssd']
+        state_data = plot_data[plot_data['state'] == state]['rmssd_ms']
         mean_val = state_data.mean()
         ax.scatter(i, mean_val, color=COLORS['text'], s=50, zorder=5, marker='D')
     
@@ -126,12 +129,15 @@ def chart2_physionet_hrv_by_workload(physionet_df, output_dir):
     plot_data = physionet_df[physionet_df['workload_label'].isin(workloads)].copy()
     
     # Order workloads
-    plot_data['workload_label'] = pd.Categorical(plot_data['workload_label'], 
+    plot_data['workload_label'] = pd.Categorical(plot_data['workload_label'],
                                                   categories=workloads, ordered=True)
     plot_data = plot_data.sort_values('workload_label')
-    
+
+    # RMSSD is stored in seconds; convert to milliseconds (the HRV convention)
+    plot_data['rmssd_ms'] = plot_data['rmssd'] * 1000
+
     # Create boxplot
-    bp = ax.boxplot([plot_data[plot_data['workload_label'] == w]['rmssd'].values for w in workloads],
+    bp = ax.boxplot([plot_data[plot_data['workload_label'] == w]['rmssd_ms'].values for w in workloads],
                     tick_labels=workloads, patch_artist=True, widths=0.6,
                     boxprops=dict(facecolor=COLORS['secondary'], edgecolor=COLORS['primary'], linewidth=1.5),
                     medianprops=dict(color=COLORS['primary'], linewidth=2),
@@ -145,7 +151,7 @@ def chart2_physionet_hrv_by_workload(physionet_df, output_dir):
     
     # Add mean markers
     for i, workload in enumerate(workloads, 1):
-        workload_data = plot_data[plot_data['workload_label'] == workload]['rmssd']
+        workload_data = plot_data[plot_data['workload_label'] == workload]['rmssd_ms']
         mean_val = workload_data.mean()
         ax.scatter(i, mean_val, color=COLORS['text'], s=50, zorder=5, marker='D')
     

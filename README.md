@@ -9,7 +9,7 @@ Most models of human capacity assume that biological signals—such as heart rat
 This project tests that assumption across different physiological contexts.
 
 - WESAD (controlled psychological stress)
-- PhysioNet workload dataset (physical demand conditions)
+- PhysioNet workload dataset (physical exercise vs. rest/recovery)
 
 The analysis compares HRV and heart rate across contexts to evaluate whether these signals are consistent and reliable indicators of demand.
 
@@ -28,7 +28,7 @@ Many wearable systems and productivity models rely on biological signals to infe
 
 **WESAD**: ECG signals collected during baseline, stress, and amusement conditions, representing controlled psychological states.
 
-**PhysioNet**: Inter-beat interval (IBI) data collected during aerobic, anaerobic, and stress conditions, representing physical demand contexts.
+**PhysioNet**: Inter-beat interval (IBI) data collected during aerobic, anaerobic, and "STRESS" conditions. The two exercise conditions (aerobic, anaerobic) are the physical-demand contexts; the condition labeled "STRESS" in the source data is actually a low-demand rest/recovery state (its mean heart rate, ~79 bpm, is the *lowest* of the three, versus ~106–115 bpm during exercise), and is treated here as the recovery baseline rather than a demand condition.
 
 ## Methods
 
@@ -49,9 +49,9 @@ Many wearable systems and productivity models rely on biological signals to infe
 - Large effect sizes in both datasets (Cohen's d > 1.0)
 - Direction differs across contexts: HR increases under psychological stress (WESAD) but follows a different pattern under physical demand conditions (PhysioNet)
 
-### 3. Demand Type Matters More Than Intensity
-- HRV distinguishes stress from physical activity
-- Does not reliably distinguish between types of physical exertion (aerobic vs anaerobic)
+### 3. HRV Barely Separates Demand Conditions
+- HRV shows at most weak separation between the rest/recovery condition and physical exertion (RMSSD: Cohen's d ≈ 0.24–0.30, not statistically significant; SDNN somewhat larger at d ≈ 0.52, only partially significant)
+- It does **not** reliably distinguish between types of physical exertion (aerobic vs anaerobic: d ≈ 0.07)
 
 ### 4. No Single Metric Is Reliable Across Contexts
 - HRV and HR both vary depending on environment and measurement conditions
